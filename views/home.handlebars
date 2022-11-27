@@ -1,0 +1,35 @@
+<h1>IoT Source Configurator</h1>
+
+<h2>Sources Broadcasting:</h2>
+<button onclick="getList()">Get sources</button>
+<ul id="online-list">
+
+</ul>
+
+<script>
+
+function getOnlineList() {
+    return fetch(`http://localhost:3001/configs/online`)
+    .then(response => response.json())
+    .then(data => data);
+}
+
+function getList() {
+    const res = getOnlineList();
+    res.then(sourcesOnline => {
+        const onlineList = document.getElementById('online-list');
+        onlineList.replaceChildren();
+        for (let src of sourcesOnline) {
+            const srcOnline = document.createElement('li');
+            const linkConfigurator = document.createElement('a');
+            linkConfigurator.setAttribute('href', `/configs/${src}/change`);
+            linkConfigurator.innerText = src
+            srcOnline.appendChild(linkConfigurator);
+            {{!-- srcOnline.innerText = src; --}}
+            onlineList.appendChild(srcOnline);
+        }
+    })
+}
+
+
+</script>

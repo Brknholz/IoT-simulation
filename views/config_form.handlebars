@@ -1,0 +1,42 @@
+<a href="/">Home</a>
+
+<h1>{{sourceName}}</h1>
+
+<form action="http://localhost:3001/configs/{{sourceName}}/change" method="post">
+    <label for="interval">Interval</label>
+    <input type="text" name="interval" placeholder="interval">
+    <label for="destination">Destination</label>
+    <input type="text" name="destination" placeholder="destination">
+    <label for="method">Method</label>
+    <input type="text" name="method" id="" placeholder="method">
+    <input type="submit" value="Submit">
+</form>
+
+{{#if sourceConfig}}
+<h3>Working configuration:</h3>
+<p>{{sourceConfig}}</p>
+{{interval}}
+{{/if}}
+
+{{#if isUploaded}}
+<h3 id="uploaded">Uploaded</h3>
+{{/if}}
+
+<h2>Known destinations:</h2>
+MQTT topics:
+<ul class="info">
+    <li>storage/mqtt/source0</li>
+    <li>storage/mqtt/source1</li>
+    <li>storage/mqtt/source2</li>
+    <li>storage/mqtt/source3</li>
+</ul>
+HTTP endpoints:
+<ul class="info">
+<li>/storage/recieve/inital</li>
+<li>/storage/recieve/source0</li>
+<li>/storage/recieve/source1</li>
+<li>/storage/recieve/source2</li>
+<li>/storage/recieve/source3</li>
+</ul>
+
+
