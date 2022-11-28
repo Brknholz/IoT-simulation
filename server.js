@@ -17,28 +17,28 @@ app.post('/storage/recieve/inital', (req, res) => {
     res.json('server OK');
 });
 
-app.post('/storage/recieve/source1', (req, res) => {
+app.post('/storage/recieve/source0', (req, res) => {
     const recievedData = req.body;
     console.log(`SERVER recieved on source1 =>`);
     console.log(recievedData), typeof(recievedData);
     res.json('server OK');
 });
 
-app.post('/storage/recieve/source2', (req, res) => {
+app.post('/storage/recieve/source1', (req, res) => {
     const recievedData = req.body;
     console.log(`SERVER recieved on source2 =>`);
     console.log(recievedData), typeof(recievedData);
     res.json('server OK');
 })
 
-app.post('/storage/recieve/source3', (req, res) => {
+app.post('/storage/recieve/source2', (req, res) => {
     const recievedData = req.body;
     console.log(`SERVER recieved on source3 =>`);
     console.log(recievedData), typeof(recievedData);
     res.json('server OK');
 })
 
-app.post('/storage/recieve/source4', (req, res) => {
+app.post('/storage/recieve/source3', (req, res) => {
     const recievedData = req.body;
     console.log(`SERVER recieved on source4 =>`);
     console.log(recievedData), typeof(recievedData);
@@ -59,10 +59,10 @@ import * as mqtt from 'mqtt';
 const client = mqtt.connect('mqtt://test.mosquitto.org', {protocol: 'mqtt'})
 
 client.subscribe('storage/data/send/mqtt');
+client.subscribe('storage/mqtt/source0');
 client.subscribe('storage/mqtt/source1');
 client.subscribe('storage/mqtt/source2');
 client.subscribe('storage/mqtt/source3');
-client.subscribe('storage/mqtt/source4');
 
 let recievedData = '';
 client.on("message", async function (topic, message) {
