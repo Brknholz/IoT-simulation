@@ -29,7 +29,7 @@ form {
     padding: 40px;
 }
 
-form input {
+form input, select{
     margin: 0 0 10px 0;
 }
 

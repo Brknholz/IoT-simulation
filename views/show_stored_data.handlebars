@@ -1,0 +1,37 @@
+<style>
+table, th, td {
+  border:1px solid black;
+}
+
+tr:last-child {
+    background-color: lightgreen;
+}
+
+button {
+    width: 10%;
+}
+</style>
+
+<h1>{{srcName}}</h1>
+<h2>Last {{rows}} updates</h2>
+<button onclick="history.back()">back</button>
+
+<table>
+    <tr>
+        <th>n.o</th>
+        {{#each labels}}
+            <th>{{this}}</th>
+        {{/each}}
+    </tr>
+
+        {{#each shareData}}
+            <tr>
+                <td>{{@index}}</td>
+                {{#each this}}
+                    <td>{{this}}</td>
+                {{/each}}
+            </tr>
+        {{/each}}
+</table>
+
+<button onclick="window.location.reload()">update</button>

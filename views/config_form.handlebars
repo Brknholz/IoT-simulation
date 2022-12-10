@@ -1,16 +1,42 @@
+<style>
+    #forms {
+        display: flex;
+    }
+
+    #measurments {
+        display: flex;
+        justify-content: center;
+        background-color:rgba(144, 238, 144, 0.342);
+    }
+</style>
+
 <a href="/">Home</a>
 
 <h1>{{sourceName}}</h1>
 
-<form action="http://localhost:3001/configs/{{sourceName}}/change" method="post">
-    <label for="interval">Interval</label>
-    <input type="text" name="interval" placeholder="interval">
-    <label for="destination">Destination</label>
-    <input type="text" name="destination" placeholder="destination">
-    <label for="method">Method</label>
-    <input type="text" name="method" id="" placeholder="method">
-    <input type="submit" value="Submit">
-</form>
+<div id="forms">
+    <form action="http://localhost:3001/configs/{{sourceName}}/change" method="post">
+        <label for="interval">Interval</label>
+        <input type="text" name="interval" placeholder="interval">
+        <label for="destination">Destination</label>
+        <input type="text" name="destination" placeholder="destination">
+        <label for="method">Method</label>
+        <input type="text" name="method" id="" placeholder="method">
+        <input type="submit" value="Submit">
+    </form>
+
+    <form action="http://localhost:3004/agg/{{sourceName}}/show" method="get" id="measurments">
+        <label for="measurmentsNumber">Get last data</label>
+        <select name="getData" id="measurmentsNumber">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <input type="submit" value="Get" id="recieveData">
+        </select>
+    </form>
+</div>
+
 
 {{#if sourceConfig}}
 <h3>Working configuration:</h3>

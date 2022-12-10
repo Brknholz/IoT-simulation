@@ -7,13 +7,14 @@ import { error } from "console";
 
 const client = mqtt.connect('mqtt://test.mosquitto.org', { protocol: 'mqtt' });
 
-const dataNameArray = ['Array_of_Things_Locations.csv', 'Beach_Weather_Stations_-_Automated_Sensors.csv', 'private_mobile_devices.csv', 'private_static_devices.csv']
+const dataNameArray = ['Array_of_Things_Locations.csv', 'Beach_Weather_Stations_-_Automated_Sensors.csv', 'private_mobile_devices.csv', 'private_static_devices.csv', 'loop_test.csv']
 
 const datasets = {
     set0: [],
     set1: [],
     set2: [],
-    set3: []
+    set3: [],
+    set4: []
 }
 
 const LoadDatasetsToArrays = async (fileName) => {
@@ -100,30 +101,32 @@ function runDataTransferInterval() {
 }
 
 function intervalInnerFunction(method, destination) {
-    // console.log(`${method}, ${destination}`)
+    const numberOfRows = datasets[`set${Number(argv[2])}`].length
     const rowInfo = datasets[`set${Number(argv[2])}`][i];
-    // console.log(datasets['set2'])
-    // console.log(datasets)
+    console.log(numberOfRows, i);
+    // Send to aggregator:
+
+    httpClientPost(rowInfo, `/agg/src${Number(argv[2])}/measurment`, 3004);
+
     if (method === 'http') {
         console.log(rowInfo, 'INSIDE HTTP')
         httpClientPost(rowInfo, destination)
         i += 1;
     } else if(method === 'mqtt') {
-            // const timeStamp = Date.now();
             console.log(`PUBLISHER source:`, rowInfo)
             client.publish(`${destination}`, `${JSON.stringify(rowInfo)}`) //storage/data/send/mqtt
             i += 1;
         }
 
-    if (i === rowInfo.length) {
+    if ( i === (numberOfRows - 1) ) {
         console.log('LOOP again')
         i = 0;
     }
 }
 
 // HTTP sending function
-async function httpClientPost(data, localisation = 'http://localhost:3000/storage/data/send') {
-    fetch(`http://localhost:3000${localisation}`, { 
+async function httpClientPost(data, localisation = 'http://localhost:3000/storage/data/send', port = 3000, ) {
+    fetch(`http://localhost:${port}${localisation}`, { 
   method: 'POST', // or 'PUT'
   headers: {
     'Content-Type': 'application/json' // text/plain
@@ -135,6 +138,8 @@ async function httpClientPost(data, localisation = 'http://localhost:3000/storag
     console.log('Success:', data);
   })
   .catch((error) => {
-    console.error('Error in HTTP POST:', error);
+    console.error(`Error POST on port:${port}:`, error.name);
   });
 }
+
+//change method for status checking

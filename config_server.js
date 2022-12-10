@@ -69,7 +69,7 @@ app.get('/configs/:sourceName', (req, res) => {
     const registerConfig = JSON.parse(JSON.stringify(initialSourceConfig));
     registerConfig.registerName = req.params.sourceName;
     if (actualSourceConfigs.hasOwnProperty(req.params.sourceName)) {
-        console.log('ACTUAL CONFIG IS AVAILABLE!!!!!!!!')
+        console.log('ACTUAL CONFIG IS AVAILABLE!')
         registerConfig.interval = actualSourceConfigs[req.params.sourceName].interval;
         registerConfig.method = actualSourceConfigs[req.params.sourceName].method;
         registerConfig.destination = actualSourceConfigs[req.params.sourceName].destination;
@@ -100,7 +100,6 @@ app.post('/configs/:sourceName/change', (req, res) => {
     actualSourceConfigs[configSourceName].method = method;
     res.render('config_form', {
         isUploaded: true
-
     })
 })
 
