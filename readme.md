@@ -1,9 +1,4 @@
-# Project tree:
-
-+--dataset/\
-+------ [datasets*.csv]\
-+--task_3/\
-+------ [project]
+# IoT Symulacja
 
 ***
 
