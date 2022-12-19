@@ -1,0 +1,56 @@
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+tr:nth-last-child(-n+3) {
+    background-color: lightgray;
+}
+
+button {
+    width: 10%;
+}
+</style>
+
+<h1>{{srcName}}</h1>
+
+{{#if attribute}} 
+    <h2>Statsistics for last {{rows}} updates for {{attribute}}</h2>
+
+    <button onclick="history.back()">back</button>
+
+    <table>
+        <tr>
+            <th>n.o</th>
+            <th>{{attribute}}</th>
+        </tr>
+    {{#each shareData}}
+        <tr>
+            <td>{{@index}}</td>
+            <td>{{this}}</td>
+        </tr>
+    {{/each}}
+        <tr>
+            <td><b>average</b></td>
+            <td><b>{{average}}</b></td>
+        </tr>
+        <tr>
+            <td><b>min</b></td>
+            <td><b>{{min}}</b></td>
+        </tr>
+        <tr>
+            <td><b>max</b></td>
+            <td><b>{{max}}</b></td>
+        </tr>
+    </table>
+
+    <p>Pocket timestamp: {{#if timestamp}} {{timestamp}} {{else}} collecting data...{{/if}}</p>
+    <button onclick="window.location.reload()">update</button>
+    {{else}}
+    <h2>Data still collecting...</h2>
+    <button onclick="window.location.reload()">update</button>
+    <button onclick="history.back()">back</button>
+{{/if}}
+

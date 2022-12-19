@@ -1,6 +1,18 @@
 <style>
+
+.wrapper {
+    
+    width: 90vw;
+    overflow: auto;
+}
+
+table {
+    margin: 0 auto;
+}
+
 table, th, td {
   border:1px solid black;
+  border-collapse: collapse;
 }
 
 tr:last-child {
@@ -16,22 +28,40 @@ button {
 <h2>Last {{rows}} updates</h2>
 <button onclick="history.back()">back</button>
 
-<table>
-    <tr>
-        <th>n.o</th>
-        {{#each labels}}
-            <th>{{this}}</th>
-        {{/each}}
-    </tr>
-
-        {{#each shareData}}
+<div class="wrapper">
+    <table>
+        <tr>
+            <th>n.o</th>
+            {{#each attributes}}
+                <th>{{this}}</th>
+            {{/each}}
+        </tr>
+    {{#each shareData}}
+        {{#each this}}
             <tr>
                 <td>{{@index}}</td>
-                {{#each this}}
-                    <td>{{this}}</td>
-                {{/each}}
+            {{#each this}}
+                <td>{{this}}</td>
+            {{/each}}
             </tr>
         {{/each}}
-</table>
+    {{/each}}
+    </table>
+</div>
 
+<p>Pocket timestamp: {{#if timestamp}} {{timestamp}} {{else}} collecting data...{{/if}}</p>
 <button onclick="window.location.reload()">update</button>
+
+
+<form action="http://localhost:3004/agg/{{srcName}}/show/stats" method="get">
+    <h3>Get statistics from:</h3>
+    <select name="getAttribute" id="attribute-select">
+        {{#each attributes}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <input type="number" value="{{rows}}" name="lastNumber" readonly hidden>
+    <input type="submit" value="Get">
+</form>
+
+<p>{{attributes}}</p>
