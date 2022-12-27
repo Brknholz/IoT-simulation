@@ -39,35 +39,34 @@ const LoadDatasetsToArrays = async (fileName) => {
         });
         }
 
-// UNCOMMENT TO TEST
 const fileName = dataNameArray[argv[2]] //find filename by file number
 LoadDatasetsToArrays(fileName) // specified dataset to array
 let i = 0;
 
 // get latest configuration from configuration server
 function getConfig() {
-    return fetch(`http://localhost:3001/configs/src${argv[2]}`)
-    .then(response => response.json())
-    .then(data => data);
+  return fetch(`http://localhost:3001/configs/src${argv[2]}`)
+  .then(response => response.json())
+  .then(data => data);
 }
 
 // alternative for sending source config
 async function sendCofigAlt(config) {
     console.log((config), 'parsed config');
     fetch(`http://localhost:3001/configs/src${argv[2]}`, { 
-  method: 'POST', // or 'PUT'
-  headers: {
-    'Content-Type': 'application/json' // text/plain
-  },
-  body: JSON.stringify(config)
-})
-  .then((response) => response.json())
-  .then((data) => {
-    console.log('config uploaded:', data);
-  })
-  .catch((error) => {
-    console.error('ERROR while uploading:', error);
-  });
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json' // text/plain
+      },
+      body: JSON.stringify(config)
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('config uploaded:', data);
+    })
+    .catch((error) => {
+      console.error('ERROR while uploading:', error);
+    });
 }
 
 let actualInterval;
@@ -79,50 +78,52 @@ function runDataTransferInterval() {
     clearInterval(actualInterval)
     const fetchConfig = getConfig();
     fetchConfig.then(config => {
-        // console.log(config)
+        console.log('POBRANY KONFIG: ', config);
         actualConfig = config
         // console.log(actualConfig)
         return actualConfig
     })
     .then(configToSet => {
         sendCofigAlt(configToSet);
-        console.log(configToSet)
-        const {interval, method, destination, registerName} = configToSet;
-        console.log(interval, method, destination, registerName)
+        // console.log(configToSet)
+        const {interval, method, destination, registerName, share, filter} = configToSet;
+        console.log(interval, method, destination, registerName, share, filter);
 
         // implement new method, destination, and interval
-        intervalInnerFunction(method, destination);
-        // let randomize = Math.floor(Math.random() * interval); random interval
-        // console.log(randomize, 'RANDOM MS')
-        actualInterval = setInterval(runDataTransferInterval, interval)
-        const reserveName = `src${argv[2]}`;
+        intervalInnerFunction(method, destination, share);
+        actualInterval = setInterval(runDataTransferInterval, interval);
+        // const reserveName = `src${argv[2]}`;
     });
     // console.log(actualConfig, 'global saved');
 }
 
-function intervalInnerFunction(method, destination) {
-    const numberOfRows = datasets[`set${Number(argv[2])}`].length
+function intervalInnerFunction(method, destination, shareSwitch) {
+    const numberOfRows = datasets[`set${Number(argv[2])}`].length;
     const rowInfo = datasets[`set${Number(argv[2])}`][i];
     console.log(numberOfRows, i);
-    // Send to aggregator:
 
-    httpClientPost(rowInfo, `/agg/src${Number(argv[2])}/measurment`, 3004);
+    // CHECK SHARE SWITCH (ON/OFF)
+    console.log(shareSwitch);
+    if (shareSwitch) {
+      // SENDING TO AGGREGATOR
+      httpClientPost(rowInfo, `/agg/src${Number(argv[2])}/measurment`, 3004);
 
-    if (method === 'http') {
-        console.log(rowInfo, 'INSIDE HTTP')
-        httpClientPost(rowInfo, destination)
-        i += 1;
-    } else if(method === 'mqtt') {
-            console.log(`PUBLISHER source:`, rowInfo)
-            client.publish(`${destination}`, `${JSON.stringify(rowInfo)}`) //storage/data/send/mqtt
-            i += 1;
-        }
+      if (method === 'http') {
+          console.log(rowInfo, 'INSIDE HTTP');
+          httpClientPost(rowInfo, destination);
+          i += 1;
+      } else if(method === 'mqtt') {
+              console.log(`PUBLISHER source:`, rowInfo);
+              client.publish(`${destination}`, `${JSON.stringify(rowInfo)}`); //storage/data/send/mqtt
+              i += 1;
+            };
 
-    if ( i === (numberOfRows - 1) ) {
-        console.log('LOOP again')
-        i = 0;
-    }
-}
+      if ( i === (numberOfRows - 1) ) {
+          console.log('LOOP again');
+          i = 0;
+      };
+    };
+};
 
 // HTTP sending function
 async function httpClientPost(data, localisation = 'http://localhost:3000/storage/data/send', port = 3000, ) {
@@ -140,6 +141,6 @@ async function httpClientPost(data, localisation = 'http://localhost:3000/storag
   .catch((error) => {
     console.error(`Error POST on port:${port}:`, error.name);
   });
-}
+};
 
 //change method for status checking

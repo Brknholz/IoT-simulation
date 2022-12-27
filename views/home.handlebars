@@ -8,8 +8,8 @@
 
 <script>
 
-function getOnlineList() {
-    return fetch(`http://localhost:3001/configs/online`)
+async function getOnlineList() {
+    return await fetch(`http://localhost:3001/configs/online`)
     .then(response => response.json())
     .then(data => data);
 }

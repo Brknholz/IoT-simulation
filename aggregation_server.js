@@ -51,8 +51,14 @@ app.get('/agg/:srcName/show/stats', (req, res) => {
     } catch {
         res.render('show_stats');
     }
-    
 });
+
+app.get('/agg/:SrcName/show/stats/attributes', (req, res) => {
+    const sourceName = req.params.SrcName;
+    res.json((storage[sourceName]['attributes']));
+    console.log('get att')
+    // res.send(JSON.stringify(storage[sourceName]['attributes']));
+})
 
 app.get('/agg/:srcName/show', (req, res) => {
     const sourceName = req.params.srcName;
@@ -85,8 +91,6 @@ app.get('/agg/:srcName/show', (req, res) => {
             package: storage[sourceName][`last${rowsNumber}`]
         });
     }
-
-    
 });
 
 app.post('/agg/:srcName/measurment', (req, res) => {

@@ -8,6 +8,23 @@
         justify-content: center;
         background-color:rgba(144, 238, 144, 0.342);
     }
+
+    fieldset {
+        margin: 10px 0;
+        padding: 5px 5px;
+    } 
+
+    legend {
+        font-size: 10px;
+        background-color: rgba(144, 238, 144, 0.342);
+        padding: 5px;
+    }
+
+    table, th, td {
+        border:1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+    }
 </style>
 
 <a href="/">Home</a>
@@ -22,11 +39,49 @@
         <input type="text" name="destination" placeholder="destination">
         <label for="method">Method</label>
         <input type="text" name="method" id="" placeholder="method">
+        
+        <fieldset>
+            <legend>switch on/off broadcast</legend>
+            <input type="radio" name="switchStatus" id="radio-on" class="normal-label" value="on">
+            <label for="radio-on">on</label>
+            
+            <input type="radio" name="switchStatus" id="radio-off" class="normal-label" value="off">
+            <label for="radio-off">off</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>filtering</legend>
+
+            {{#ifEquals sourceConfig.filter false}}
+                <input type="checkbox" name="filtering" id="filter" value="on">
+                <label for="filter">add filtering*</label>
+                <p class="form-info">*add filtering - change broadcast configuration by applying filtering module</p>
+                {{else}}
+                <input type="checkbox" name="filtering" id="filter" value="off">
+                <label for="filter">disable filtering*</label>
+                <p class="form-info">* disable filtering module</p>
+            {{/ifEquals}}
+        </fieldset>
+
+        
         <input type="submit" value="Submit">
     </form>
+    
+    <section class="configuration">
+    {{#if sourceConfig}}
+        <h3>Working configuration:</h3>
+        <table>
+            {{#each sourceConfig}}
+                <tr>
+                    <th>{{@key}}</th>
+                    <td>{{this}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    {{/if}}
 
     <form action="http://localhost:3004/agg/{{sourceName}}/show" method="get" id="measurments">
-        <label for="measurmentsNumber">Get last data</label>
+        <label for="measurmentsNumber">Get last data package</label>
         <select name="getData" id="measurmentsNumber">
             <option value="5">5</option>
             <option value="10">10</option>
@@ -35,34 +90,32 @@
             <input type="submit" value="Get" id="recieveData">
         </select>
     </form>
+    </section>
 </div>
 
-
-{{#if sourceConfig}}
-<h3>Working configuration:</h3>
-<p>{{sourceConfig}}</p>
-{{interval}}
-{{/if}}
-
-{{#if isUploaded}}
-<h3 id="uploaded">Uploaded</h3>
-{{/if}}
-
 <h2>Known destinations:</h2>
-MQTT topics:
-<ul class="info">
-    <li>storage/mqtt/source0</li>
-    <li>storage/mqtt/source1</li>
-    <li>storage/mqtt/source2</li>
-    <li>storage/mqtt/source3</li>
-</ul>
-HTTP endpoints:
-<ul class="info">
-<li>/storage/recieve/inital</li>
-<li>/storage/recieve/source0</li>
-<li>/storage/recieve/source1</li>
-<li>/storage/recieve/source2</li>
-<li>/storage/recieve/source3</li>
-</ul>
+<footer>
+    <section class="mqtt">
+        <h4>MQTT topics:</h4>
+        <ul class="info">
+            <li>storage/mqtt/source0</li>
+            <li>storage/mqtt/source1</li>
+            <li>storage/mqtt/source2</li>
+            <li>storage/mqtt/source3</li>
+        </ul>
+    </section>
+
+    <section class="http">
+        <h4>HTTP endpoints:</h4>
+        <ul class="info">
+            <li>/storage/recieve/inital</li>
+            <li>/storage/recieve/source0</li>
+            <li>/storage/recieve/source1</li>
+            <li>/storage/recieve/source2</li>
+            <li>/storage/recieve/source3</li>
+        </ul>
+    </section>
+</footer>
+
 
 

@@ -58,6 +58,36 @@ h3 {
     box-shadow: 5px 5px whitesmoke;
 }
 
-.info {
-    background-color: whitesmoke;
+footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(241, 241, 241);
+}
+
+footer section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(144, 238, 144, 0.342);
+    border-radius: 10px;
+}
+
+footer section h4 {
+    background-color: rgb(41, 41, 41);
+    padding: 10px;
+    color: rgb(241, 241, 241);
+    width: 100%;
+}
+
+h1 {
+    width: 100%;
+    color: rgb(241, 241, 241);
+    background-color: rgb(41, 41, 41);
+    padding: 10px;
+}
+
+.form-info {
+    padding: 10px 0;
+    font-size: 10px;
 }
