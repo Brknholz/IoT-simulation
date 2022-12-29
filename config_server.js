@@ -45,8 +45,9 @@ const initialSourceConfig = {
     method: 'http',
     destination: '/storage/recieve/inital',
     registerName: 'src1',
-    share: false,
-    filter: false
+    share: true,
+    filter: false,
+    filterAttributes: []
 }
 
 // REST endpoints
@@ -85,6 +86,7 @@ app.get('/configs/:sourceName', (req, res) => {
         registerConfig.destination = actualSourceConfigs[req.params.sourceName].destination;
         registerConfig.share = actualSourceConfigs[req.params.sourceName].share;
         registerConfig.filter = actualSourceConfigs[req.params.sourceName].filter;
+        registerConfig.filterAttributes = actualSourceConfigs[req.params.sourceName].filterAttributes;
         // console.log(registerConfig)
         // console.log(actualSourceConfigs[req.params.sourceName]);
     }
@@ -116,13 +118,29 @@ app.get('/configs/:sourceName/change', async (req, res) => {
 // recieve new configuration parameters from html form
 app.post('/configs/:sourceName/change', (req, res) => {
 
-    const {interval, destination, method, switchStatus, filtering} = req.body;
+    const {interval, destination, method, switchStatus, filtering, filtered_att} = req.body;
     console.log(interval, destination, method, switchStatus);
     console.log('switch: ', switchStatus, Boolean(switchStatus));
+    try {
+        console.log(`filtered attributes: ${filtered_att}, length = ${filtered_att.length}`);
+    } catch {
+        console.log('no length in filtered attributes!')
+    }
+    
     const configSourceName = req.params.sourceName;
     actualSourceConfigs[configSourceName].interval = interval !== '' ? interval : initialSourceConfig.interval;
     actualSourceConfigs[configSourceName].destination = destination !== '' ? destination : initialSourceConfig.destination;
     actualSourceConfigs[configSourceName].method = method !== '' ? method : initialSourceConfig.method;
+    // actualSourceConfigs[configSourceName].filter_attributes = filtered_att.length !== 0 ? set(filtered_att) : initialSourceConfig;
+
+    try {
+        if (filtered_att.length !== 0) {
+            actualSourceConfigs[configSourceName].filterAttributes = [...new Set(filtered_att)];
+        } 
+    } catch (err) {
+        console.log('no length ERROR');
+    }
+
     switch(switchStatus) {
         case 'on':
             actualSourceConfigs[configSourceName].share = true;

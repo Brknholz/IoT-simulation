@@ -86,8 +86,8 @@ function runDataTransferInterval() {
     .then(configToSet => {
         sendCofigAlt(configToSet);
         // console.log(configToSet)
-        const {interval, method, destination, registerName, share, filter} = configToSet;
-        console.log(interval, method, destination, registerName, share, filter);
+        const {interval, method, destination, registerName, share, filter, filterAttributes} = configToSet;
+        console.log(interval, method, destination, registerName, share, filter, filterAttributes);
 
         // implement new method, destination, and interval
         intervalInnerFunction(method, destination, share);

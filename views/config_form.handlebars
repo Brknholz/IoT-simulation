@@ -25,6 +25,11 @@
         border-collapse: collapse;
         padding: 5px;
     }
+
+    #filter-box {
+        display: flex;
+        flex-direction: column;
+    }
 </style>
 
 <a href="/">Home</a>
@@ -60,10 +65,19 @@
                 <input type="checkbox" name="filtering" id="filter" value="off">
                 <label for="filter">disable filtering*</label>
                 <p class="form-info">* disable filtering module</p>
+                <hr>
+                <fieldset id="filter-box">
+                    <legend>select attributes</legend>
+                    {{#each sourceAttributes}}
+                        <span>
+                            <input type="checkbox" name="filtered_att" id="filter{{@index}}" value="{{this}}">
+                            <label for="filter{{@index}}">{{this}}</label>
+                        </span>
+                    {{/each}}
+                 </fieldset>
             {{/ifEquals}}
         </fieldset>
 
-        
         <input type="submit" value="Submit">
     </form>
     
