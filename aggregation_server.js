@@ -136,7 +136,7 @@ app.post('/agg/:srcName/measurment', (req, res) => {
     collectAndStoreLast(15);
     collectAndStoreLast(20);
 
-    res.send('ok');
+    res.status(200);
 });
 
 app.listen(3004, 'localhost');

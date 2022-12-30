@@ -90,27 +90,44 @@ function runDataTransferInterval() {
         console.log(interval, method, destination, registerName, share, filter, filterAttributes);
 
         // implement new method, destination, and interval
-        intervalInnerFunction(method, destination, share);
+        intervalInnerFunction(method, destination, share, filter, filterAttributes);
         actualInterval = setInterval(runDataTransferInterval, interval);
         // const reserveName = `src${argv[2]}`;
     });
     // console.log(actualConfig, 'global saved');
 }
 
-function intervalInnerFunction(method, destination, shareSwitch) {
+function intervalInnerFunction(method, destination, shareSwitch, filter, attributes) {
+    console.log(destination)
     const numberOfRows = datasets[`set${Number(argv[2])}`].length;
-    const rowInfo = datasets[`set${Number(argv[2])}`][i];
+    let rowInfo = datasets[`set${Number(argv[2])}`][i];
+    
+    
     console.log(numberOfRows, i);
 
     // CHECK SHARE SWITCH (ON/OFF)
     console.log(shareSwitch);
     if (shareSwitch) {
-      // SENDING TO AGGREGATOR
+      // SENDING TO AGGREGATOR NON FILTERED DATA - separate service
       httpClientPost(rowInfo, `/agg/src${Number(argv[2])}/measurment`, 3004);
+
+      // if filter enabled, change rowInfo structure
+      if (filter) {
+        const filterData = {
+          rowInfo,
+          config: {
+            rootDestination: destination,
+            attributes
+          }
+        };
+  
+        destination = `/filtration/recieve/data`;
+        rowInfo = filterData;
+      }
 
       if (method === 'http') {
           console.log(rowInfo, 'INSIDE HTTP');
-          httpClientPost(rowInfo, destination);
+          httpClientPost(rowInfo, destination, filter ? 3005 : 3000);
           i += 1;
       } else if(method === 'mqtt') {
               console.log(`PUBLISHER source:`, rowInfo);
@@ -139,8 +156,15 @@ async function httpClientPost(data, localisation = 'http://localhost:3000/storag
     console.log('Success:', data);
   })
   .catch((error) => {
+    // console.error(`Error POST on port:${port}:`, error);
     console.error(`Error POST on port:${port}:`, error.name);
   });
 };
+
+
+/*
+before sending data from source, check if filtering is enabled.
+If filtering is enabled, send data frame to the filterig app endpoint in pocket with destination address and 
+*/
 
 //change method for status checking
