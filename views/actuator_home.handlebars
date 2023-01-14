@@ -1,0 +1,151 @@
+<a href="http://localhost:3001/">Home</a>
+
+<h1>Heating Actuator</h1>
+
+<div class="forms">
+    <form action="http://localhost:3006/actuator/config" method="post">
+        <label for="destination">Destination</label>
+        <input type="text" name="destination" placeholder="destination">
+        <label for="method">Method</label>
+        <input type="text" name="method" id="" placeholder="method">
+
+        <fieldset>
+            <legend>switch on/off actuator</legend>
+            <label for="stateOn">On</label>
+            <input type="radio" name="stateOn" id="" value="1" class="normal-label">
+
+            <label for="stateOff">Off</label>
+            <input type="radio" name="stateOff" id="" value="0" class="normal-label">
+        </fieldset>
+
+        <label for="temp">Room temperature</label>
+        <input type="text" id="temp" name="roomTemp">
+
+        <label for="power">Power (W)</label>
+        <input type="text" id="power" name="heatPower">
+
+        <fieldset>
+            <legend>filtering - HTTP only</legend>
+
+            {{#ifEquals config.filter false}}
+                <input type="checkbox" name="filtering" id="filter" value="on">
+                <label for="filter">add filtering*</label>
+                <p class="form-info">*add filtering - change broadcast configuration by applying filtering module</p>
+                {{else}}
+                <input type="checkbox" name="filtering" id="filter" value="off">
+                <label for="filter">disable filtering*</label>
+                <p class="form-info">* disable filtering module</p>
+                <hr>
+                <fieldset id="filter-box">
+                    <legend>select attributes</legend>
+                    {{#each sourceAttributes}}
+                        <span>
+                            <input type="checkbox" name="filtered_att" id="filter{{@index}}" value="{{this}}">
+                            <label for="filter{{@index}}">{{this}}</label>
+                        </span>
+                    {{/each}}
+                 </fieldset>
+            {{/ifEquals}}
+        </fieldset>
+
+        <input type="submit" value="Send">
+    </form>
+
+    <form action="http://localhost:3004/agg/actuator/show" method="get" id="measurments">
+        <label for="measurmentsNumber">Get last data package</label>
+        <select name="getData" id="measurmentsNumber">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <input type="submit" value="Get" id="recieveData">
+        </select>
+    </form>
+
+    
+</div>
+
+
+{{!-- <table>
+    {{#each config}}
+        <tr>
+            <th>{{@key}}</th>
+            <td>{{this}}</td>
+        </tr>
+    {{/each}}
+</table>
+
+<button onclick="window.location.reload()">Get Update</button> --}}
+
+<table class="test">
+
+</table>
+
+<script>
+    let inc = 0;
+    const tableConfig = document.querySelector('.test');
+
+    async function getConfig() {
+        return await fetch(`http://localhost:3006/actuator/config/info`)
+        .then(response => response)
+        .then(data => data);
+    }
+
+    setInterval(() => {
+        console.log(tableConfig.childElementCount)
+        const res = getConfig();
+
+        res.then(config => config.json())
+        .then(responseJson => {
+            for (let attr in responseJson) {
+                if (tableConfig.childElementCount < 11) {
+                    const newTr = document.createElement('tr');
+                    const newTh = document.createElement('th');
+                    const newTd = document.createElement('td');
+                    newTh.innerText = attr;
+                    newTr.appendChild(newTh)
+                    newTd.innerText = responseJson[attr];
+                    newTr.appendChild(newTd);
+                    tableConfig.appendChild(newTr)
+                } else {
+                    tableConfig.childNodes[1].childNodes[1].innerText = responseJson['active'];
+                    tableConfig.childNodes[2].childNodes[1].innerText = responseJson['state'];
+                    tableConfig.childNodes[3].childNodes[1].innerText = responseJson['setRoomTemp'];
+                    tableConfig.childNodes[4].childNodes[1].innerText = responseJson['heatPower'];
+                    tableConfig.childNodes[5].childNodes[1].innerText = responseJson['actualRoomTemp'];
+                    tableConfig.childNodes[6].childNodes[1].innerText = responseJson['status'];
+                    tableConfig.childNodes[7].childNodes[1].innerText = responseJson['filter'];
+                    tableConfig.childNodes[8].childNodes[1].innerText = responseJson['method'];
+                    tableConfig.childNodes[9].childNodes[1].innerText = responseJson['destination'];
+                    tableConfig.childNodes[10].childNodes[1].innerText = responseJson['registerName'];
+                    tableConfig.childNodes[11].childNodes[1].innerText = responseJson['filterAttributes'];
+                }
+            }
+        })
+    }, 1000)
+</script>
+
+<h2>Known destinations:</h2>
+<footer>
+    <section class="mqtt">
+        <h4>MQTT topics:</h4>
+        <ul class="info">
+            <li>storage/mqtt/source0</li>
+            <li>storage/mqtt/source1</li>
+            <li>storage/mqtt/source2</li>
+            <li>storage/mqtt/source3</li>
+        </ul>
+    </section>
+
+    <section class="http">
+        <h4>HTTP endpoints:</h4>
+        <ul class="info">
+            <li>/storage/recieve/inital</li>
+            <li>/storage/recieve/source0</li>
+            <li>/storage/recieve/source1</li>
+            <li>/storage/recieve/source2</li>
+            <li>/storage/recieve/source3</li>
+            <li>/storage/recieve/actuator</li>
+        </ul>
+    </section>
+</footer>

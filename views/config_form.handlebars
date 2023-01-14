@@ -1,42 +1,12 @@
 <style>
-    #forms {
-        display: flex;
-    }
 
-    #measurments {
-        display: flex;
-        justify-content: center;
-        background-color:rgba(144, 238, 144, 0.342);
-    }
-
-    fieldset {
-        margin: 10px 0;
-        padding: 5px 5px;
-    } 
-
-    legend {
-        font-size: 10px;
-        background-color: rgba(144, 238, 144, 0.342);
-        padding: 5px;
-    }
-
-    table, th, td {
-        border:1px solid black;
-        border-collapse: collapse;
-        padding: 5px;
-    }
-
-    #filter-box {
-        display: flex;
-        flex-direction: column;
-    }
 </style>
 
 <a href="/">Home</a>
 
 <h1>{{sourceName}}</h1>
 
-<div id="forms">
+<div class="forms">
     <form action="http://localhost:3001/configs/{{sourceName}}/change" method="post">
         <label for="interval">Interval</label>
         <input type="text" name="interval" placeholder="interval">
@@ -55,7 +25,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>filtering</legend>
+            <legend>filtering - HTTP only</legend>
 
             {{#ifEquals sourceConfig.filter false}}
                 <input type="checkbox" name="filtering" id="filter" value="on">

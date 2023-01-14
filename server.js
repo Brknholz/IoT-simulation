@@ -45,6 +45,13 @@ app.post('/storage/recieve/source3', (req, res) => {
     res.json('server OK');
 })
 
+app.post('/storage/recieve/actuator', (req, res) => {
+    const recievedData = req.body;
+    console.log(`SERVER - actuator data recieved =>`);
+    console.log(recievedData);
+    res.json('server OK');
+})
+
 //DEFAULT endpoint
 app.post('/storage/data/send', (req, res) => {
     const recievedData = req.body;

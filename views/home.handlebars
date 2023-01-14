@@ -2,7 +2,12 @@
 
 <h2>Sources Broadcasting:</h2>
 <button onclick="getList()">Get sources</button>
-<ul id="online-list">
+
+<ul class="online-list-actuator">
+    <li><a href="http://localhost:3006/actuator/config">Heating actuator</a></li>
+</ul>
+
+<ul class="online-list">
 
 </ul>
 
@@ -17,7 +22,7 @@ async function getOnlineList() {
 function getList() {
     const res = getOnlineList();
     res.then(sourcesOnline => {
-        const onlineList = document.getElementById('online-list');
+        const onlineList = document.querySelector('.online-list');
         onlineList.replaceChildren();
         for (let src of sourcesOnline) {
             const srcOnline = document.createElement('li');

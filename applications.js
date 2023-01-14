@@ -160,11 +160,3 @@ async function httpClientPost(data, localisation = 'http://localhost:3000/storag
     console.error(`Error POST on port:${port}:`, error.name);
   });
 };
-
-
-/*
-before sending data from source, check if filtering is enabled.
-If filtering is enabled, send data frame to the filterig app endpoint in pocket with destination address and 
-*/
-
-//change method for status checking

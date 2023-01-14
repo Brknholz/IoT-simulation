@@ -22,6 +22,7 @@ const app = express();
 app.use(express.json());
 
 // recieve data with filtering configuration if source has filtration enabled.
+// filtration only with HTTP - MQTT not implemented
 app.post('/filtration/recieve/data', (req, res) => {
     const {rowInfo} = req.body;
     const {rootDestination, attributes} = req.body.config;
