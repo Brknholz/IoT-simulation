@@ -37,6 +37,8 @@ applications.js has a limit to 4 simultanously running apps.
 
 ![running apps](https://drive.google.com/file/d/16LCB_b0589f_yqCEJTSgMzjHY_PUno_z/view?usp=sharing)
 
+<a href="https://drive.google.com/uc?export=view&id=16LCB_b0589f_yqCEJTSgMzjHY_PUno_z"><img src="https://drive.google.com/uc?export=view&id=16LCB_b0589f_yqCEJTSgMzjHY_PUno_z" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
+
 #### Subscribed MQTT topics:
 - storage/mqtt/source0
 - storage/mqtt/source1
