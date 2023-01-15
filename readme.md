@@ -34,14 +34,14 @@ By default there is 4 data sources, which numbers are hardcoded (0, 1, 2, 3).
 
 ### Run apps:
 
-`node .\server.js`
-`node .\config_server.js`
-`node .\aggregation_server.js`
-`node .\filtration.js`
-`node .\actuator.js`
-`node .\applications.js "source_number"`
+`node .\server.js`<br>
+`node .\config_server.js`<br>
+`node .\aggregation_server.js`<br>
+`node .\filtration.js`<br>
+`node .\actuator.js`<br>
+`node .\applications.js "source_number"`<br>
 
-applications.js has a limit to 4 simultanously running apps.
+applications.js has a limit to 4 simultaneously running apps.
 
 <a href="https://drive.google.com/uc?export=view&id=16LCB_b0589f_yqCEJTSgMzjHY_PUno_z"><img src="https://drive.google.com/uc?export=view&id=16LCB_b0589f_yqCEJTSgMzjHY_PUno_z" style="width: 150px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 
