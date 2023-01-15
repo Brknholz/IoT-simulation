@@ -66,22 +66,24 @@
 </div>
 
 
-{{!-- <table>
-    {{#each config}}
-        <tr>
-            <th>{{@key}}</th>
-            <td>{{this}}</td>
-        </tr>
-    {{/each}}
-</table>
-
-<button onclick="window.location.reload()">Get Update</button> --}}
+<div id="graph"></div>
 
 <table class="test">
 
 </table>
 
 <script>
+    var time = new Date();
+
+    var data = [{
+        x: [time], 
+        y: [0],
+        mode: 'lines',
+        line: {color: '#80CAF6'}
+    }]
+
+    Plotly.plot('graph', data);  
+
     let inc = 0;
     const tableConfig = document.querySelector('.test');
 
@@ -121,6 +123,26 @@
                     tableConfig.childNodes[11].childNodes[1].innerText = responseJson['filterAttributes'];
                 }
             }
+
+            var time = new Date();
+  
+            var update = {
+            x:  [[time]],
+            y: [[responseJson['actualRoomTemp']]]
+            }
+            
+            var olderTime = time.setMinutes(time.getMinutes() - 1);
+            var futureTime = time.setMinutes(time.getMinutes() + 1);
+            
+            var minuteView = {
+                    xaxis: {
+                    type: 'date',
+                    range: [olderTime,futureTime]
+                    }
+                };
+            
+            Plotly.relayout('graph', minuteView);
+            Plotly.extendTraces('graph', update, [0])
         })
     }, 1000)
 </script>

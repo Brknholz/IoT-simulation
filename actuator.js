@@ -81,7 +81,7 @@ setInterval(() => {
     //check if auto mode is enabled
 
     // temperature bias
-    if (initActuatorConfig.active) {
+    if (Number(initActuatorConfig.active)) {
         if ( initActuatorConfig.actualRoomTemp < (initActuatorConfig.setRoomTemp - 0.5) ) {
             console.log('roomTemp is NOT OK, heating ON', initActuatorConfig.actualRoomTemp);
             initActuatorConfig.status = 'Temperature out of scope, heating ON';
@@ -102,7 +102,7 @@ setInterval(() => {
     }
 
     // httpClientPost(initActuatorConfig, '/storage/recieve/actuator', 3000);
-    // httpClientPost(initActuatorConfig, '/agg/actuator/measurment', 3004);
+    httpClientPost(initActuatorConfig, '/agg/actuator/measurment', 3004);
 
     let rowInfo = initActuatorConfig;
 
