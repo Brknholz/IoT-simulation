@@ -10,7 +10,7 @@
 </p>
 ***
 
-*The origin of this project comes from IoT course from studies.*
+*The origin of this project comes from IoT course.*
 
 Project shows simulation of data broadcasting from multiple sources with managment system.
 The main application can be run multiple times by choosing which data source should be used.
